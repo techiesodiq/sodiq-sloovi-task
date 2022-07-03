@@ -1,0 +1,55 @@
+.form {
+  padding: 13px;
+  background-color: #edf7fc;
+}
+
+.task-description {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+label {
+  margin-bottom: 8px;
+}
+
+.date-and-time {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.date-time-col {
+  display: flex;
+  flex-direction: column;
+  width: 47%;
+}
+
+.assign-user {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.form-btn {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.cancel-btn {
+  margin-right: 10px;
+  background-color: #edf7fc;
+  border: 0px;
+  cursor: pointer;
+}
+
+.save-btn {
+  background-color: #47bb7f;
+  color: #ffffff;
+  padding: 7px 20px;
+  margin-left: 10px;
+  border: 0px;
+  border-radius: 4px;
+}

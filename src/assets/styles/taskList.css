@@ -1,0 +1,47 @@
+.list-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  height: 40px;
+}
+
+.details {
+  display: flex;
+  align-items: center;
+}
+
+.image-box {
+  margin-right: 5px;
+}
+
+.image-box img {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.data-box {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.task-item {
+  padding: 0px;
+  margin: 0px;
+  font-size: 12.5px;
+  font-weight: bold;
+}
+
+.task-date {
+  padding: 0px;
+  margin: 0px;
+  color: red;
+  font-size: 11px;
+}
+
+.edit-btn {
+  margin-right: 5px;
+}

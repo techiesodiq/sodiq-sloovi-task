@@ -1,0 +1,23 @@
+header {
+  background-color: #ffffff;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 10px;
+  margin: 0px;
+}
+
+.task-count {
+  font-size: 12px;
+  padding: 0px;
+}
+
+.add-task {
+  background-color: #ffffff;
+  border: 0px;
+  margin: 0px;
+  padding: 5px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
