@@ -1,9 +1,18 @@
-import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "../assets/styles/taskForm.css";
-import { handleCancel } from "../features/show";
+import { handleCancel } from "../redux/features/show";
+import { getUserDetails } from "../redux/features/userDetails";
 
 const TaskForm = () => {
   const dispatch = useDispatch();
+  const userDetails = useSelector((state) => state.userDetails.value);
+
+  useEffect(() => {
+    dispatch(getUserDetails());
+  }, []);
+
+  console.log(userDetails);
   return (
     <form className="form">
       <div className="task-description">
