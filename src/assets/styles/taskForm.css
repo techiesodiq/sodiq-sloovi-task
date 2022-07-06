@@ -23,13 +23,17 @@ label {
 .date-time-col {
   display: flex;
   flex-direction: column;
-  width: 47%;
+  width: 31%;
 }
 
 .assign-user {
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;
+}
+
+.checkbox {
+  display: flex;
 }
 
 .form-btn {
