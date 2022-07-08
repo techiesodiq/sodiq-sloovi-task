@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const BASE_URL = "https://stage.api.sloovi.com";
 const COMPANY_ID = "company_413ef22b6237417fb1fba7917f0f69e7";
@@ -19,9 +20,10 @@ export const getAddUser = createAsyncThunk(
         data: task,
       });
       console.log("this is response", data);
+      toast.success(data.message);
       return data;
     } catch (error) {
-      console.log("this is error", error);
+      toast.error("this is error", error);
       rejectWithValue(error);
     }
   }

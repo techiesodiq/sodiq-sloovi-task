@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import "../assets/styles/taskForm.css";
 import timeZoneData from "../data/time-zone.json";
 import { getAddUser } from "../redux/features/addUser";
@@ -48,6 +49,7 @@ const TaskForm = () => {
       assigned_user: formData.assigned_user,
     };
     dispatch(getAddUser(modifiedFormData));
+    toast.success("Task Added");
     dispatch(getAllTasks);
     dispatch(handleAddToggle(!showAdd));
   };
