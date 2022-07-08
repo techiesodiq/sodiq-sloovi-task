@@ -11,7 +11,6 @@ let config = { Authorization: "Bearer " + ACCESS_TOKEN };
 export const getUserDetails = createAsyncThunk(
   "getUserDetails",
   async (object, { getState, rejectWithValue }) => {
-    console.log(getState());
     try {
       const { data } = await axios.get(
         `${BASE_URL}/team?product=outreach&company_id=${COMPANY_ID}`,

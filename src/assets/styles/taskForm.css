@@ -1,4 +1,4 @@
-.form {
+.form-container {
   padding: 13px;
   background-color: #edf7fc;
 }
@@ -42,6 +42,23 @@ label {
   margin-top: 20px;
 }
 
+.edit-form-btn {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.delete-btn {
+  background-color: #edf7fc;
+  border: 0px;
+  cursor: pointer;
+}
+
+.save-and-cancel {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .cancel-btn {
   margin-right: 10px;
   background-color: #edf7fc;
@@ -56,4 +73,5 @@ label {
   margin-left: 10px;
   border: 0px;
   border-radius: 4px;
+  cursor: pointer;
 }

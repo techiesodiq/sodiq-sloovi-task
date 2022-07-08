@@ -1,11 +1,13 @@
 import { useSelector } from "react-redux";
 import "../assets/styles/dashboard.css";
+import EditTaskForm from "../components/EditTaskForm";
 import TaskForm from "../components/TaskForm";
 import TaskHeader from "../components/TaskHeader";
 import TaskList from "../components/TaskList";
 
 const Dashboard = () => {
-  const show = useSelector((state) => state.show.value);
+  const showAdd = useSelector((state) => state?.showAdd.value);
+  const showEdit = useSelector((state) => state?.showEdit.value);
 
   return (
     <div className="container">
@@ -13,8 +15,9 @@ const Dashboard = () => {
       <main className="main">
         <div className="main-card">
           <TaskHeader />
-          <TaskList />
-          {show && <TaskForm />}
+          {!showAdd && !showEdit && <TaskList />}
+          {showAdd && <TaskForm />}
+          {showEdit && <EditTaskForm />}
         </div>
       </main>
     </div>

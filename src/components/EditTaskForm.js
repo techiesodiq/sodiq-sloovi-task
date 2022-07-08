@@ -1,21 +1,33 @@
 import { useEffect, useState } from "react";
+import { GoTrashcan } from "react-icons/go";
 import { useDispatch, useSelector } from "react-redux";
 import "../assets/styles/taskForm.css";
 import timeZoneData from "../data/time-zone.json";
-import { getAddUser } from "../redux/features/addUser";
 import { getAllTasks } from "../redux/features/allTasks";
-import { handleAddToggle } from "../redux/features/showAdd";
+import { getDeleteUser } from "../redux/features/deleteUser";
+import { getEditUser } from "../redux/features/editUser";
+import { handleEditToggle } from "../redux/features/showEdit";
+import { getSingleTask } from "../redux/features/singleTask";
 import { getUserDetails } from "../redux/features/userDetails";
 import {
   convertBooleanToInteger,
+  convertIntegerToBoolean,
+  convertIntegerToString,
+  convertSecondsToTime,
   convertStringToInteger,
   convertTimeToSeconds,
 } from "../utilities/helperFunctions";
 
-const TaskForm = () => {
+const EditTaskForm = () => {
   const dispatch = useDispatch();
-  const userDetails = useSelector((state) => state?.userDetails?.data);
-  const showAdd = useSelector((state) => state.showAdd.value);
+  const showEdit = useSelector((state) => state.showEdit.value);
+  const editTaskID = useSelector((state) => state.editTaskID.value);
+  const singleTask = useSelector((state) => state.singleTask.data);
+  const userDetails = useSelector((state) => state.userDetails.data);
+  useEffect(() => {
+    dispatch(getUserDetails());
+  }, [dispatch]);
+  console.log(userDetails);
   const [formData, setFormData] = useState({
     task_msg: "",
     task_date: "",
@@ -25,18 +37,42 @@ const TaskForm = () => {
     assigned_user: "",
   });
 
+  const handleDelete = () => {
+    dispatch(getDeleteUser(singleTask.id));
+    dispatch(getAllTasks());
+    dispatch(handleEditToggle(!showEdit));
+  };
+
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     setFormData((values) => ({ ...values, [name]: value }));
-    console.log(formData);
   };
+
   const handleCheck = () => {
     setFormData((values) => ({
       ...values,
       is_completed: !values.is_completed,
     }));
   };
+
+  useEffect(() => {
+    dispatch(getSingleTask(editTaskID));
+  }, [editTaskID, dispatch]);
+
+  useEffect(() => {
+    if (singleTask?.task_msg) {
+      setFormData({
+        task_msg: singleTask.task_msg,
+        task_date: singleTask.task_date,
+        task_time: convertSecondsToTime(singleTask.task_time),
+        is_completed: convertIntegerToBoolean(singleTask.is_completed),
+        time_zone: convertIntegerToString(singleTask.time_zone),
+        assigned_user: singleTask.assigned_user,
+      });
+    }
+  }, [singleTask]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const modifiedFormData = {
@@ -47,17 +83,13 @@ const TaskForm = () => {
       time_zone: convertStringToInteger(formData.time_zone),
       assigned_user: formData.assigned_user,
     };
-    dispatch(getAddUser(modifiedFormData));
-    dispatch(getAllTasks);
-    dispatch(handleAddToggle(!showAdd));
+    dispatch(getEditUser({ task_id: singleTask.id, task: modifiedFormData }));
+    dispatch(getAllTasks());
+    dispatch(handleEditToggle(!showEdit));
   };
-
-  useEffect(() => {
-    dispatch(getUserDetails());
-  }, [dispatch]);
-
+  console.log(userDetails);
   return (
-    <form onSubmit={handleSubmit} className="form-container">
+    <form className="form-container" onSubmit={handleSubmit}>
       <div>
         <div className="task-description">
           <label>Task Description</label>
@@ -66,6 +98,7 @@ const TaskForm = () => {
             type="text"
             placeholder="Your task message here"
             onChange={handleChange}
+            value={formData.task_msg}
           />
         </div>
 
@@ -76,6 +109,7 @@ const TaskForm = () => {
               name="task_date"
               type="date"
               placeholder="04/06/2022"
+              value={formData.task_date}
               onChange={handleChange}
             />
           </div>
@@ -86,6 +120,7 @@ const TaskForm = () => {
               type="time"
               placeholder="Time"
               onChange={handleChange}
+              value={formData.task_time}
             />
           </div>
 
@@ -103,7 +138,11 @@ const TaskForm = () => {
 
         <div className="assign-user">
           <label>Assign User</label>
-          <select name="assigned_user" onChange={handleChange}>
+          <select
+            name="assigned_user"
+            value={formData.assigned_user}
+            onChange={handleChange}
+          >
             {userDetails.map((data, index) => (
               <option key={index} value={data.id}>
                 {data.name}
@@ -118,26 +157,33 @@ const TaskForm = () => {
             type="checkbox"
             name="is_completed"
             value={formData.is_completed}
+            onChange={handleChange}
             onClick={handleCheck}
           ></input>
         </div>
       </div>
-      <div className="form-btn">
-        <button
-          type="button"
-          onClick={() => {
-            dispatch(handleAddToggle(!showAdd));
-          }}
-          className="cancel-btn"
-        >
-          Cancel
+      <div className="edit-form-btn">
+        <button type="button" onClick={handleDelete} className="delete-btn">
+          <GoTrashcan size={20} />
         </button>
-        <button type="submit" className="save-btn">
-          Save
-        </button>
+
+        <div className="save-and-cancel">
+          <button
+            type="button"
+            onClick={() => {
+              dispatch(handleEditToggle(!showEdit));
+            }}
+            className="cancel-btn"
+          >
+            Cancel
+          </button>
+          <button type="submit" className="save-btn">
+            Save
+          </button>
+        </div>
       </div>
     </form>
   );
 };
 
-export default TaskForm;
+export default EditTaskForm;

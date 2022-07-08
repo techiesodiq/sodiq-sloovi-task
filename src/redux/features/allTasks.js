@@ -8,27 +8,23 @@ const ACCESS_TOKEN =
 
 let config = { Authorization: "Bearer " + ACCESS_TOKEN };
 
-export const getAddUser = createAsyncThunk(
-  "getAddUsers",
-  async (task, { rejectWithValue }) => {
+export const getAllTasks = createAsyncThunk(
+  "getAllTasks",
+  async (object, { getState, rejectWithValue }) => {
     try {
-      const { data } = await axios({
-        method: "post",
-        url: `${BASE_URL}/task/lead_465c14d0e99e4972b6b21ffecf3dd691?company_id=${COMPANY_ID}`,
-        headers: config,
-        data: task,
-      });
-      console.log("this is response", data);
-      return data;
+      const { data } = await axios.get(
+        `${BASE_URL}/task/lead_465c14d0e99e4972b6b21ffecf3dd691?company_id=${COMPANY_ID}`,
+        { headers: config }
+      );
+      return data.results;
     } catch (error) {
-      console.log("this is error", error);
-      rejectWithValue(error);
+      rejectWithValue(error.response);
     }
   }
 );
 
-const addUser = createSlice({
-  name: "addUser",
+const allTasks = createSlice({
+  name: "allTasks",
   initialState: {
     data: [],
     loading: false,
@@ -37,22 +33,20 @@ const addUser = createSlice({
   },
   reducers: {},
   extraReducers: {
-    [getAddUser.pending]: (state, action) => {
+    [getAllTasks.pending]: (state, action) => {
       state.loading = true;
     },
-    [getAddUser.fulfilled]: (state, { payload }) => {
+    [getAllTasks.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.data = payload;
       state.isSuccess = true;
-      console.log(payload);
     },
-    [getAddUser.rejected]: (state, { payload }) => {
+    [getAllTasks.rejected]: (state, { payload }) => {
       state.loading = false;
       state.isSuccess = false;
       state.message = "failed";
-      console.log(payload);
     },
   },
 });
 
-export default addUser.reducer;
+export default allTasks.reducer;

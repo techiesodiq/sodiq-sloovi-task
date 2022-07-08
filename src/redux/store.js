@@ -1,15 +1,25 @@
 import { configureStore } from "@reduxjs/toolkit";
 import addUserReducer from "./features/addUser";
+import allTasksReducer from "./features/allTasks";
+import deleteUserReducer from "./features/deleteUser";
+import editTaskIDReducer from "./features/editTaskID";
 import editUserReducer from "./features/editUser";
-import showReducer from "./features/show";
+import showAddReducer from "./features/showAdd";
+import showEditReducer from "./features/showEdit";
+import singleTaskReducer from "./features/singleTask";
 import userDetailsReducer from "./features/userDetails";
 
 const store = configureStore({
   reducer: {
-    show: showReducer,
+    showAdd: showAddReducer,
+    showEdit: showEditReducer,
     userDetails: userDetailsReducer,
     addUser: addUserReducer,
     editUser: editUserReducer,
+    deleteUser: deleteUserReducer,
+    allTasks: allTasksReducer,
+    editTaskID: editTaskIDReducer,
+    singleTask: singleTaskReducer,
   },
 });
 

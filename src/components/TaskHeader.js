@@ -1,18 +1,19 @@
 import { FaPlus } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import "../assets/styles/taskHeader.css";
-import { handlePlus } from "../redux/features/show";
-// import { handlePlus } from "../features/show";
+import { handleAddToggle } from "../redux/features/showAdd";
 
 const TaskHeader = () => {
   const dispatch = useDispatch();
-  const show = useSelector((state) => state.show.value);
+  const showAdd = useSelector((state) => state.showAdd.value);
+  const allTasks = useSelector((state) => state.allTasks.data);
+
   return (
     <header>
-      <p className="task-count">TASKS 0</p>
+      <p className="task-count">TASKS {allTasks.length}</p>
       <button
         onClick={() => {
-          dispatch(handlePlus(!show));
+          dispatch(handleAddToggle(!showAdd));
         }}
         className="add-task"
       >
