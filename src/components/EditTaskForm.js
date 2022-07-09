@@ -18,16 +18,18 @@ import {
   convertTimeToSeconds,
 } from "../utilities/helperFunctions";
 
+const DELAYED_TIME = 2000;
+
 const EditTaskForm = () => {
   const dispatch = useDispatch();
   const showEdit = useSelector((state) => state.showEdit.value);
   const editTaskID = useSelector((state) => state.editTaskID.value);
   const singleTask = useSelector((state) => state.singleTask.data);
   const userDetails = useSelector((state) => state.userDetails.data);
+  const loading = useSelector((state) => state.editUser.loading);
   useEffect(() => {
     dispatch(getUserDetails());
   }, [dispatch]);
-  console.log(userDetails);
   const [formData, setFormData] = useState({
     task_msg: "",
     task_date: "",
@@ -40,7 +42,9 @@ const EditTaskForm = () => {
   const handleDelete = () => {
     dispatch(getDeleteUser(singleTask.id));
     dispatch(getAllTasks());
-    dispatch(handleEditToggle(!showEdit));
+    setTimeout(() => {
+      dispatch(handleEditToggle(!showEdit));
+    }, DELAYED_TIME);
   };
 
   const handleChange = (e) => {
@@ -85,15 +89,18 @@ const EditTaskForm = () => {
     };
     dispatch(getEditUser({ task_id: singleTask.id, task: modifiedFormData }));
     dispatch(getAllTasks());
-    dispatch(handleEditToggle(!showEdit));
+    setTimeout(() => {
+      dispatch(handleEditToggle(!showEdit));
+    }, DELAYED_TIME);
   };
-  console.log(userDetails);
+
   return (
     <form className="form-container" onSubmit={handleSubmit}>
       <div>
         <div className="task-description">
           <label>Task Description</label>
           <input
+            required
             name="task_msg"
             type="text"
             placeholder="Your task message here"
@@ -106,6 +113,7 @@ const EditTaskForm = () => {
           <div className="date-time-col">
             <label>Date</label>
             <input
+              required
               name="task_date"
               type="date"
               placeholder="04/06/2022"
@@ -116,6 +124,7 @@ const EditTaskForm = () => {
           <div className="date-time-col">
             <label>Time</label>
             <input
+              required
               name="task_time"
               type="time"
               placeholder="Time"
@@ -126,7 +135,7 @@ const EditTaskForm = () => {
 
           <div className="date-time-col">
             <label>Time Zone</label>
-            <select name="time_zone" onChange={handleChange}>
+            <select required name="time_zone" onChange={handleChange}>
               {timeZoneData.map((data, index) => (
                 <option key={index} value={data.value}>
                   {data.label}
@@ -139,10 +148,12 @@ const EditTaskForm = () => {
         <div className="assign-user">
           <label>Assign User</label>
           <select
+            defaultValue=""
             name="assigned_user"
             value={formData.assigned_user}
             onChange={handleChange}
           >
+            <option value="" hidden></option>
             {userDetails.map((data, index) => (
               <option key={index} value={data.id}>
                 {data.name}
@@ -178,7 +189,7 @@ const EditTaskForm = () => {
             Cancel
           </button>
           <button type="submit" className="save-btn">
-            Save
+            {loading ? "Saving..." : "Save"}
           </button>
         </div>
       </div>

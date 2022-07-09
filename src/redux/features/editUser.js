@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const BASE_URL = "https://stage.api.sloovi.com";
 const COMPANY_ID = "company_413ef22b6237417fb1fba7917f0f69e7";
@@ -18,10 +19,9 @@ export const getEditUser = createAsyncThunk(
         headers: config,
         data: task,
       });
-      console.log("this is response", data);
+
       return data;
     } catch (error) {
-      console.log("this is error", error);
       rejectWithValue(error);
     }
   }
@@ -44,13 +44,15 @@ const editUser = createSlice({
       state.loading = false;
       state.data = payload;
       state.isSuccess = true;
-      console.log(payload);
+
+      toast.success(payload.message);
     },
     [getEditUser.rejected]: (state, { payload }) => {
       state.loading = false;
       state.isSuccess = false;
       state.message = "failed";
-      console.log(payload);
+
+      toast.error(payload.message);
     },
   },
 });

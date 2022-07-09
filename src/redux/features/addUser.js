@@ -19,11 +19,8 @@ export const getAddUser = createAsyncThunk(
         headers: config,
         data: task,
       });
-      console.log("this is response", data);
-      toast.success(data.message);
       return data;
     } catch (error) {
-      toast.error("this is error", error);
       rejectWithValue(error);
     }
   }
@@ -46,13 +43,13 @@ const addUser = createSlice({
       state.loading = false;
       state.data = payload;
       state.isSuccess = true;
-      console.log(payload);
+      toast.success(payload.message);
     },
     [getAddUser.rejected]: (state, { payload }) => {
       state.loading = false;
       state.isSuccess = false;
       state.message = "failed";
-      console.log(payload);
+      toast.error(payload.message);
     },
   },
 });

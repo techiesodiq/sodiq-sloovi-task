@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const BASE_URL = "https://stage.api.sloovi.com";
 const COMPANY_ID = "company_413ef22b6237417fb1fba7917f0f69e7";
@@ -17,10 +18,9 @@ export const getDeleteUser = createAsyncThunk(
         url: `${BASE_URL}/task/lead_465c14d0e99e4972b6b21ffecf3dd691/${task_id}?company_id=${COMPANY_ID}`,
         headers: config,
       });
-      console.log("this is response", data);
+
       return data;
     } catch (error) {
-      console.log("this is error", error);
       rejectWithValue(error);
     }
   }
@@ -43,13 +43,13 @@ const deleteUser = createSlice({
       state.loading = false;
       state.data = payload;
       state.isSuccess = true;
-      console.log(payload);
+      toast.success(payload.message);
     },
     [getDeleteUser.rejected]: (state, { payload }) => {
       state.loading = false;
       state.isSuccess = false;
       state.message = "failed";
-      console.log(payload);
+      toast.error(payload.message);
     },
   },
 });

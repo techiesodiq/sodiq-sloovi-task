@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
 import "../assets/styles/taskForm.css";
 import timeZoneData from "../data/time-zone.json";
 import { getAddUser } from "../redux/features/addUser";
@@ -13,9 +12,12 @@ import {
   convertTimeToSeconds,
 } from "../utilities/helperFunctions";
 
+const DELAYED_TIME = 2000;
+
 const TaskForm = () => {
   const dispatch = useDispatch();
   const userDetails = useSelector((state) => state?.userDetails?.data);
+  const loading = useSelector((state) => state.addUser.loading);
   const showAdd = useSelector((state) => state.showAdd.value);
   const [formData, setFormData] = useState({
     task_msg: "",
@@ -30,7 +32,6 @@ const TaskForm = () => {
     const name = e.target.name;
     const value = e.target.value;
     setFormData((values) => ({ ...values, [name]: value }));
-    console.log(formData);
   };
   const handleCheck = () => {
     setFormData((values) => ({
@@ -49,9 +50,10 @@ const TaskForm = () => {
       assigned_user: formData.assigned_user,
     };
     dispatch(getAddUser(modifiedFormData));
-    toast.success("Task Added");
     dispatch(getAllTasks);
-    dispatch(handleAddToggle(!showAdd));
+    setTimeout(() => {
+      dispatch(handleAddToggle(!showAdd));
+    }, DELAYED_TIME);
   };
 
   useEffect(() => {
@@ -64,6 +66,7 @@ const TaskForm = () => {
         <div className="task-description">
           <label>Task Description</label>
           <input
+            required
             name="task_msg"
             type="text"
             placeholder="Your task message here"
@@ -75,6 +78,7 @@ const TaskForm = () => {
           <div className="date-time-col">
             <label>Date</label>
             <input
+              required
               name="task_date"
               type="date"
               placeholder="04/06/2022"
@@ -84,6 +88,7 @@ const TaskForm = () => {
           <div className="date-time-col">
             <label>Time</label>
             <input
+              required
               name="task_time"
               type="time"
               placeholder="Time"
@@ -93,7 +98,13 @@ const TaskForm = () => {
 
           <div className="date-time-col">
             <label>Time Zone</label>
-            <select name="time_zone" onChange={handleChange}>
+            <select
+              defaultValue="none"
+              required
+              name="time_zone"
+              onChange={handleChange}
+            >
+              <option value="" hidden></option>
               {timeZoneData.map((data, index) => (
                 <option key={index} value={data.value}>
                   {data.label}
@@ -105,7 +116,13 @@ const TaskForm = () => {
 
         <div className="assign-user">
           <label>Assign User</label>
-          <select name="assigned_user" onChange={handleChange}>
+          <select
+            defaultValue=""
+            required
+            name="assigned_user"
+            onChange={handleChange}
+          >
+            <option value="" hidden></option>
             {userDetails.map((data, index) => (
               <option key={index} value={data.id}>
                 {data.name}
@@ -135,7 +152,7 @@ const TaskForm = () => {
           Cancel
         </button>
         <button type="submit" className="save-btn">
-          Save
+          {loading ? "Saving..." : " Save"}
         </button>
       </div>
     </form>

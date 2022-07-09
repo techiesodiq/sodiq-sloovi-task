@@ -22,7 +22,8 @@ export const convertSecondsToTime = (seconds) => {
   return hrs + ":" + mts;
 };
 
-export const convertBooleanToInteger = (input) => (input ? 1 : 0);
+export const convertBooleanToInteger = (input) =>
+  input ? parseInt(1) : parseInt(0);
 
 export const convertIntegerToBoolean = (input) => (input === 1 ? true : false);
 

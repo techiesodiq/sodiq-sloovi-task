@@ -23,16 +23,19 @@
   border-radius: 2px;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 576px) {
   .container {
-    display: flex;
     justify-content: center;
   }
   .vertical-sidebar {
-    display: "none";
+    display: none;
   }
 
   .main {
     width: 100%;
+    display: flex;
+    justify-content: center;
+    height: auto;
+    margin-right: 20px;
   }
 }
